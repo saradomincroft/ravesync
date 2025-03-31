@@ -30,7 +30,7 @@ export default function TabLayout() {
             <Ionicons name="bookmarks" size={size} color={color}/>
             }}
         />
-        <Tabs.Screen name="create"
+        <Tabs.Screen name="createPosts"
             options={{tabBarIcon: ({size,color}) =>
             <Ionicons name="add-circle" size={size} color={COLORS.primary} />
             }}

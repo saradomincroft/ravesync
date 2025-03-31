@@ -45,11 +45,11 @@ export default function Login() {
 
                 // Fetch the user profile after Google sign-in
                 const userProfile = await getUserProfile(createdSessionId);
-                if (userProfile && !userProfile.username) {
-                    router.replace("/initialProfile");
-                } else {
+                // if (userProfile && !userProfile.username) {
+                //     router.replace("/initialProfile");
+                // } else {
                     router.replace("/(tabs)");
-                }
+                // }
             } else {
                 setError("Failed to create a session. Please try again.");
             }
