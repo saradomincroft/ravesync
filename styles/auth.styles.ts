@@ -1,3 +1,4 @@
+// styles/auth.styles.ts
 import { COLORS } from "@/constants/theme";
 import { Platform, StyleSheet, Dimensions } from "react-native";
 
@@ -175,5 +176,27 @@ tabText: {
 },
 activeTabText: {
     color: COLORS.primary,
+},
+genresContainer: {
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  marginVertical: 10,
+},
+genreButton: {
+  padding: 10,
+  margin: 5,
+  backgroundColor: COLORS.grey,
+  borderRadius: 5,
+},
+selectedGenre: {
+  backgroundColor: COLORS.primary,
+},
+genreText: {
+  color: COLORS.primary,
+},
+label: {
+  fontSize: 16,
+  fontWeight: 'bold',
+  marginBottom: 5,
 },
 });

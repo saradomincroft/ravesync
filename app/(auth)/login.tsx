@@ -15,6 +15,17 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
 
+    // Function to fetch the user profile using sessionId
+    const getUserProfile = async (sessionId: string) => {
+        const response = await fetch(`/api/getUserProfile`, {
+            method: 'POST',
+            body: JSON.stringify({ sessionId }),
+        });
+        const userProfile = await response.json();
+        return userProfile;
+    };
+
+    // Effect to clear error message after 2 seconds
     useEffect(() => {
         if (error) {
             const timer = setTimeout(() => {
@@ -24,18 +35,30 @@ export default function Login() {
         }
     }, [error]);
 
+    // Handle Google SSO sign-in
     const handleGoogleSignIn = async () => {
         try {
-            const { createdSessionId, setActive } = await startSSOFlow({ strategy: "oauth_google" });
-            if (setActive && createdSessionId) {
-                setActive({ session: createdSessionId });
-                router.replace("/(tabs)");
+            const { createdSessionId } = await startSSOFlow({ strategy: "oauth_google" });
+
+            if (createdSessionId && setActive) {
+                await setActive({ session: createdSessionId });
+
+                // Fetch the user profile after Google sign-in
+                const userProfile = await getUserProfile(createdSessionId);
+                if (userProfile && !userProfile.username) {
+                    router.replace("/initialProfile");
+                } else {
+                    router.replace("/(tabs)");
+                }
+            } else {
+                setError("Failed to create a session. Please try again.");
             }
         } catch (error) {
             setError("Something went wrong with Google login. Please try again.");
         }
     };
 
+    // Handle Email and Password Sign-in
     const handleEmailPasswordSignIn = useCallback(async () => {
         if (!isLoaded) return;
 
@@ -46,8 +69,22 @@ export default function Login() {
             });
 
             if (signInAttempt.status === 'complete') {
-                await setActive({ session: signInAttempt.createdSessionId });
-                router.replace('/(tabs)');
+                const { createdSessionId } = signInAttempt;
+
+                if (createdSessionId) {
+                    await setActive({ session: createdSessionId });
+
+                    // Fetch the user profile after sign-in is complete
+                    const userProfile = await getUserProfile(createdSessionId);
+
+                    if (userProfile && !userProfile.username) {
+                        router.replace("/initialProfile");
+                    } else {
+                        router.replace("/(tabs)");
+                    }
+                } else {
+                    setError("Session creation failed. Please try again.");
+                }
             } else {
                 setError("Incorrect email or password.");
             }

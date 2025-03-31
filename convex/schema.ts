@@ -4,27 +4,25 @@ import { v } from "convex/values"
 export default defineSchema({
     users: defineTable({
         username: v.string(),
-        fullname: v.string(),
         email: v.string(),
         bio: v.optional(v.string()),
         image: v.optional(v.string()),
         followers: v.number(),
         following: v.number(),
         posts: v.number(),
-        followedGenres: v.array(v.id("genres")),
-        location: v.optional(v.id("locations")),
+        followedGenres: v.optional(v.array(v.id("genres"))),
         clerkId: v.string(),
     }).index("by_clerk_id", ["clerkId"]),
 
     posts: defineTable({
-        userId: v.id("users"), // owner of post
+        userId: v.id("users"), // Owner of the post
         imageUrl: v.string(),
-        storageId: v.id("_storage"), // needed when deleting post
+        storageId: v.id("_storage"), // Needed when deleting post
         caption: v.optional(v.string()),
         likes: v.number(),
         comments: v.number(),
-        genre: v.id("genres"),
-        location: v.id("locations"),
+        genre:  v.optional(v.id("genres")),
+        location:  v.optional(v.id("locations")),
     })
         .index("by_user", ["userId"])
         .index("by_genre_location", ["genre", "location"]),
@@ -37,6 +35,14 @@ export default defineSchema({
         name: v.string(),
     }),
 
+    favouriteLocations: defineTable({
+        userId: v.id("users"), // User who favourited the location
+        locationId: v.id("locations"), // The location that has been favourited
+    })
+    .index("by_user", ["userId"])
+    .index("by_location", ["locationId"])
+    .index("by_user_and_location", ["userId", "locationId"]),
+
     likes: defineTable({
         userId: v.id("users"),
         postId: v.id("posts"),
@@ -45,8 +51,8 @@ export default defineSchema({
         .index("by_user_and_post", ["userId", "postId"]),
 
     comments: defineTable({
-        userId: v.id("users"), // comment author
-        postId: v.id("posts"), // which post comment is on
+        userId: v.id("users"), // Comment author
+        postId: v.id("posts"), // What post on
         content: v.string(),
     }).index("by_post", ["postId"]),
 
@@ -69,7 +75,7 @@ export default defineSchema({
     chats: defineTable({
         genre: v.id("genres"),
         location: v.id("locations"),
-        participants: v.array(v.id("users")), // Users in the chat
+        participants: v.array(v.id("users")),
         messages: v.array(v.object({ userId: v.id("users"), content: v.string() })), // Chat messages
     }).index("by_genre_location", ["genre", "location"]),
 
