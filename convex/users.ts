@@ -10,6 +10,7 @@ export const createUser = mutation({
     clerkId: v.string(),
   },
   handler: async (ctx, args) => {
+    const username = args.email.split('@')[0];
     const existingUser = await ctx.db
       .query("users")
       .withIndex("by_clerk_id", (q) => q.eq("clerkId", args.clerkId))
@@ -18,7 +19,7 @@ export const createUser = mutation({
     if (existingUser) return;
 
     await ctx.db.insert("users", {
-      username: args.username,
+      username,
       email: args.email,
       bio: args.bio,
       image: args.image,

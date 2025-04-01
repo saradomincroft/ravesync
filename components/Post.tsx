@@ -21,10 +21,11 @@ type PostProps = {
         isLiked: boolean;
         isBookmarked: boolean;
         author: {
-            _id: string;
-            username: string;
-            image: string;
-        };
+            _id: Id<"users"> | undefined;
+            username: string | undefined;
+            image: string | undefined;
+          }
+          
     }
 }
 
@@ -58,7 +59,7 @@ export default function Post({post}: PostProps ) {
                         transition={200}
                         cachePolicy="memory-disk"
                     />
-                    <Text style={styles.postUsername}>{post.author.username}</Text>
+                    <Text style={styles.postUsername}>{ post.author.username }</Text>
                 </TouchableOpacity>
             </Link>
 
