@@ -1,93 +1,71 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { COLORS } from "@/constants/theme";
 import { styles } from "@/styles/auth.styles";
-import { useSignUp, useSSO, useUser } from "@clerk/clerk-expo";
+import React from "react";
+import { useSignUp, useSSO } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { Text, TextInput, Button, View, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 
 export default function SignUp() {
     const { startSSOFlow } = useSSO();
+    const { isLoaded, signUp, setActive } = useSignUp();
     const router = useRouter();
-    const { signUp, setActive, isLoaded } = useSignUp();
-    const { user, isLoaded: isUserLoaded } = useUser(); // Using useUser to access current user
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [confirmPassword, setConfirmPassword] = React.useState('');
+    const [pendingVerification, setPendingVerification] = React.useState(false);
+    const [code, setCode] = React.useState('');
     const [error, setError] = useState<string | null>(null);
-    const [pendingVerification, setPendingVerification] = useState(false);
-    const [code, setCode] = useState('');
 
-    // Function to fetch the user profile using sessionId
-    const getUserProfile = async (sessionId: string) => {
-        const response = await fetch(`/api/getUserProfile`, {
-            method: 'POST',
-            body: JSON.stringify({ sessionId }),
-        });
-        const userProfile = await response.json();
-        return userProfile;
-    };
-
-    // Effect to clear error message after 2 seconds
-    useEffect(() => {
-        if (error) {
-            const timer = setTimeout(() => {
-                setError(null);
-            }, 2000);
-            return () => clearTimeout(timer);
-        }
-    }, [error]);
+        useEffect(() => {
+            if (error) {
+                const timer = setTimeout(() => {
+                    setError(null);
+                }, 2000);
+                return () => clearTimeout(timer);
+            }
+        }, [error]);
 
     const handleGoogleSignUp = async () => {
         try {
-            const { createdSessionId } = await startSSOFlow({ strategy: "oauth_google" });
-
-            if (createdSessionId && setActive) {
-                await setActive({ session: createdSessionId });
-
-                // Fetch the user profile after Google sign-in
-                const userProfile = await getUserProfile(createdSessionId);
-                if (userProfile && !userProfile.username) {
-                    router.replace("/initialProfile");
-                } else {
-                    router.replace("/(tabs)");
-                }
-            } else {
-                setError("Failed to create a session. Please try again.");
+            const { createdSessionId, setActive } = await startSSOFlow({ strategy: "oauth_google" });
+            if (setActive && createdSessionId) {
+                setActive({ session: createdSessionId });
+                router.replace("/(tabs)");
             }
         } catch (error) {
-            setError("Something went wrong with Google sign-up. Please try again.");
+            setError("Something went wrong with Google login. Please try again.");
         }
     };
 
-    const handleEmailPasswordSignUp = useCallback(async () => {
+    const handleEmailPasswordSignUp = async () => {
         if (!isLoaded) return;
-
+    
         if (password !== confirmPassword) {
             setError("Passwords do not match.");
             return;
         }
-
+    
         try {
             const signUpAttempt = await signUp.create({
                 emailAddress: email,
                 password: password,
             });
-
-            if (signUpAttempt.status === "complete") {
-                await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-                setPendingVerification(true);
-            } else {
-                setError("Something went wrong during sign-up. Please try again.");
-            }
+            await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
+            setPendingVerification(true);
         } catch (err: any) {
+            console.error('Sign up error:', err);
+    
             if (err?.message) {
-                setError(err.message);
+                setError(err.message); 
             } else {
-                setError("Something went wrong during sign-up. Please try again.");
+                setError('Something went wrong during sign-up. Please try again.');
             }
         }
-    }, [isLoaded, email, password, confirmPassword]);
+    };
+    
 
     const onVerifyPress = async () => {
         if (!isLoaded) return;
@@ -97,20 +75,14 @@ export default function SignUp() {
                 code,
             });
 
-            if (signUpAttempt.status === "complete" && setActive && signUpAttempt.createdSessionId) {
+            if (signUpAttempt.status === 'complete') {
                 await setActive({ session: signUpAttempt.createdSessionId });
-
-                // After email verification, check if the user has a username.
-                if (!user?.username) {
-                    router.replace("/initialProfile"); // Redirect to profile setup
-                } else {
-                    router.replace("/(tabs)"); // Redirect to main tabs
-                }
+                router.replace('/(tabs)');
             } else {
-                setError("Verification failed. Please try again.");
+                console.error("Verification failed", JSON.stringify(signUpAttempt, null, 2));
             }
         } catch (err) {
-            setError("Verification failed. Please try again.");
+            console.error("Verification error", JSON.stringify(err, null, 2));
         }
     };
 
@@ -124,9 +96,7 @@ export default function SignUp() {
                     placeholderTextColor="#666666"
                     onChangeText={(code) => setCode(code)}
                 />
-                <TouchableOpacity onPress={onVerifyPress}>
-                    <Text>Verify</Text>
-                </TouchableOpacity>
+                <Button title="Verify" onPress={onVerifyPress} />
             </>
         );
     }

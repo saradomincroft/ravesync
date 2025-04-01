@@ -58,9 +58,6 @@ http.route({
                     image: image_url || null,
                     clerkId: id,
                     bio: "",
-                    followers: 0,
-                    following: 0,
-                    posts: 0,
                     followedGenres: [],
                 });
             } catch (error) {

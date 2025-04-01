@@ -1,15 +1,11 @@
-import { mutation } from "./_generated/server";
+import { mutation, MutationCtx, QueryCtx } from "./_generated/server";
 import { v } from "convex/values";
-
 export const createUser = mutation({
   args: {
     username: v.string(),
     email: v.string(),
     bio: v.optional(v.string()),
     image: v.optional(v.string()),
-    followers: v.number(),
-    following: v.number(),
-    posts: v.number(),
     followedGenres: v.array(v.id("genres")),
     clerkId: v.string(),
   },
@@ -34,3 +30,21 @@ export const createUser = mutation({
     });
   },
 });
+
+export async function getAuthenticatedUser(ctx:QueryCtx | MutationCtx) {
+  const identity = await ctx.auth.getUserIdentity();
+  if (!identity) {
+      console.error("User is not authenticated");
+      throw new Error("Unauthorized");
+  }
+
+  const currentUser = await ctx.db.query("users").withIndex(
+      "by_clerk_id", (q) => q.eq("clerkId", identity.subject)
+  ).first();
+
+  if (!currentUser) {
+      console.error("User not found:", identity.subject);
+      throw new Error("User not found");
+  }
+  return currentUser;
+}

@@ -44,12 +44,13 @@ export const seedData = mutation({
         "Jungle",
         "Metal",
         "New wave",
+        "Riddim",
         "Rock",
         "Synth-pop",
         "Tech house",
         "Techno",
         "Trance",
-        "Trap music"
+        "Trap"
     ];
 
     for (const location of locationData) {

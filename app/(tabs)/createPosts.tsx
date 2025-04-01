@@ -155,7 +155,7 @@ export default function CreatePosts() {
                   placeholderTextColor={COLORS.grey}
                   multiline
                   value={caption}
-
+                  onChangeText={setCaption} 
                 >
 
                 </TextInput>

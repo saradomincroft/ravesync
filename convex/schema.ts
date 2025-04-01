@@ -86,7 +86,7 @@ export default defineSchema({
         .index("by_user", ["userId"])
         .index("by_chat", ["chatId"]),
 
-    bookmark: defineTable({
+    bookmarks: defineTable({
         userId: v.id("users"),
         postId: v.id("posts"),
     })

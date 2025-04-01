@@ -111,4 +111,39 @@ export const styles = StyleSheet.create({
     paddingTop: 8,
     minHeight: 40,
   },
+  inputLabel: {
+    fontSize: 16,
+    color: COLORS.primary,
+    marginBottom: 8,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: COLORS.grey,
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 12,
+  },
+  tagsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginBottom: 16,
+  },
+  tag: {
+    backgroundColor: COLORS.primary,
+    borderRadius: 15,
+    marginRight: 8,
+    marginBottom: 8,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+  tagText: {
+    color: COLORS.white,
+    fontSize: 14,
+  },
+  locationTag: {
+    backgroundColor: COLORS.secondary,
+    borderRadius: 15,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
 });
