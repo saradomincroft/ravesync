@@ -24,7 +24,7 @@ type PostProps = {
         author: {
             _id: Id<"users"> | undefined;
             username: string | undefined;
-            image: string | undefined;
+            image: string | "";
           }
           
     }
@@ -94,7 +94,7 @@ export default function Post({post}: PostProps ) {
                     size={24}
                     color={isLiked ? COLORS.primary : COLORS.white} />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => setShowComments(true)}>
                     <Ionicons name="chatbubble-outline" size={22} color={COLORS.white} />
                 </TouchableOpacity>
             </View>

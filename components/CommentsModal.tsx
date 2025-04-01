@@ -7,7 +7,8 @@ import { useMutation, useQuery } from 'convex/react';
 import { useState } from 'react';
 import { View, Text, Modal, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native'
 import { Loader } from './Loader';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, TextInput } from 'react-native-gesture-handler';
+import Comment from './Comment';
 
 
 type CommentsModal = {
@@ -50,6 +51,25 @@ export default function CommentsModal({onClose,onCommentAdded,postId,visible}: C
                 contentContainerStyle={styles.commentsList}
                 />
             )}
+
+            <View style={styles.commentInput}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Add a comment..."
+                    placeholderTextColor={COLORS.grey}
+                    value={newComment}
+                    onChangeText={setNewComment}
+                    multiline
+                />
+
+                <TouchableOpacity
+                    onPress={handleAddComment} disabled={!newComment.trim()}>
+                        <Text style={[styles.postButton, !newComment.trim() && styles.postButtonDisabled]}>
+                            Post
+                        </Text>
+
+                </TouchableOpacity>
+            </View>
         </KeyboardAvoidingView>
     
     </Modal>
