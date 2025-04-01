@@ -33,6 +33,7 @@ export default function CreatePosts() {
     if (!result.canceled) setSelectedImage(result.assets[0].uri);
   };
 
+
   const generateUploadUrl = useMutation(api.posts.generateUploadUrl)
   const createPost = useMutation(api.posts.createPost)
 
