@@ -12,9 +12,27 @@ export const getNotifications = query({
 
         const notificationsWithInfo = await Promise.all(
             notifications.map(async (notification) => {
-                const sender = await ctx.db.get(notification.senderId)
+                const sender = (await ctx.db.get(notification.senderId))! // this will never be null
                 let post = null;
                 let comment = null;
+
+                if(notification.postId) {
+                    post = await ctx.db.get(notification.postId)
+                }
+                if(notification.type === "comment" && notification.commentId) {
+                    comment = await ctx.db.get(notification.commentId)
+                }
+
+                return {
+                    ...notification,
+                    sender: {
+                        _id: sender._id,
+                        username: sender.username,
+                        image: sender.image,
+                    },
+                    post,
+                    comment: comment?.content,
+                }
             })
         )
 
