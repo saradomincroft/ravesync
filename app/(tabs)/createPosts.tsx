@@ -52,6 +52,10 @@ export default function CreatePosts() {
         if (uploadResult.status !== 200) throw new Error("Upload failed")
         const { storageId } = JSON.parse(uploadResult.body);
       await createPost({storageId,caption})
+
+      setSelectedImage(null);
+      setCaption("");
+
       router.push("/(tabs)")
     } catch (error) {
       Alert.alert( "An error occurred while sharing the post.");    
