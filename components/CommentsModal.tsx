@@ -7,7 +7,7 @@ import { useMutation, useQuery } from 'convex/react';
 import { useState } from 'react';
 import { View, Text, Modal, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native'
 import { Loader } from './Loader';
-import { FlatList, TextInput } from 'react-native-gesture-handler';
+import { FlatList, TextInput } from 'react-native';
 import Comment from './Comment';
 
 

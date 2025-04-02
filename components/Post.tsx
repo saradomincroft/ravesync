@@ -26,8 +26,8 @@ type PostProps = {
         author: {
             _id: Id<"users"> | undefined;
             username: string | undefined;
-            image: string | "";
-          }
+            image?: string;
+        }
           
     }
 }
