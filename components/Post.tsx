@@ -10,6 +10,7 @@ import { Link } from 'expo-router';
 import { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import CommentsModal from './CommentsModal';
+import { formatDistanceToNow } from 'date-fns';
 
 type PostProps = {
     post:{
@@ -85,7 +86,7 @@ export default function Post({post}: PostProps ) {
             transition={200}
             cachePolicy="memory-disk"
         />
-        {/* POSTS */}
+        {/* POST ACTIONS */}
         <View style={styles.postActions}>
             <View style={styles.postActionsLeft}>
                 <TouchableOpacity onPress={handleLike}>
@@ -114,10 +115,12 @@ export default function Post({post}: PostProps ) {
                     <Text style={styles.captionText}>{post.caption}</Text>
                 </View>  
             )}
-            <TouchableOpacity>
-                <Text style={styles.commentsText}>View all 2 comments</Text>
+            <TouchableOpacity onPress={() => setShowComments(true)}>
+                <Text style={styles.commentsText}>View all {commentsCount} comments</Text>
             </TouchableOpacity>
-            <Text style={styles.timeAgo}>2 hours ago</Text>
+            <Text style={styles.timeAgo}>
+                {formatDistanceToNow(post._creationTime, { addSuffix: true })}
+            </Text>
         </View>
 
         <CommentsModal 
