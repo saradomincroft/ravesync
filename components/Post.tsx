@@ -33,12 +33,14 @@ type PostProps = {
 
 export default function Post({post}: PostProps ) {
     const [isLiked, setIsLiked] = useState(post.isLiked);
+    const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
     const [likesCount, setLikesCount] = useState(post.likes);
     const [commentsCount, setCommentsCount] = useState(post.comments);
     const [showComments, setShowComments] = useState(false);
 
 
-    const toggleLike = useMutation(api.posts.toggleLike)
+    const toggleLike = useMutation(api.posts.toggleLike);
+    const toggleBookmark = useMutation(api.bookmarks.toggleBookmark);
     
     const handleLike = async () => {
         try {
@@ -49,6 +51,11 @@ export default function Post({post}: PostProps ) {
             console.error("Error toggling likes:", error);
         }
     };
+
+    const handleBookmark = async () => {
+        const newIsBookmarked = await toggleBookmark({ postId: post._id });
+        setIsBookmarked(newIsBookmarked);
+    }
 
 
   return (
@@ -99,8 +106,8 @@ export default function Post({post}: PostProps ) {
                     <Ionicons name="chatbubble-outline" size={22} color={COLORS.white} />
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity>
-                <Ionicons name={"bookmark-outline"} size={22} color={COLORS.white} />
+            <TouchableOpacity onPress={handleBookmark}>
+                <Ionicons name={isBookmarked ? "bookmark" : "bookmark-outline"} size={22} color={COLORS.white} />
             </TouchableOpacity>
         </View>
 
@@ -115,9 +122,13 @@ export default function Post({post}: PostProps ) {
                     <Text style={styles.captionText}>{post.caption}</Text>
                 </View>  
             )}
+
+            {commentsCount > 0 && (
             <TouchableOpacity onPress={() => setShowComments(true)}>
                 <Text style={styles.commentsText}>View all {commentsCount} comments</Text>
             </TouchableOpacity>
+            )}
+
             <Text style={styles.timeAgo}>
                 {formatDistanceToNow(post._creationTime, { addSuffix: true })}
             </Text>
