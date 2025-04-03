@@ -1,14 +1,11 @@
 import { Loader } from '@/components/Loader';
+import Notification from "@/components/Notification";
 import { COLORS } from '@/constants/theme';
-import { api } from '@/convex/_generated/api'
+import { api } from '@/convex/_generated/api';
 import { styles } from '@/styles/notifications.styles';
 import { Ionicons } from '@expo/vector-icons';
-import { useQuery } from 'convex/react'
-import { Link } from 'expo-router';
-import { Image } from 'expo-image';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native'
-import { formatDistanceToNow } from 'date-fns';
-import Notification from "@/components/Notification";
+import { useQuery } from 'convex/react';
+import { FlatList, Text, View } from 'react-native';
 
 export default function Notifications() {
   const notifications = useQuery(api.notifications.getNotifications);
@@ -19,7 +16,7 @@ export default function Notifications() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text>Notifications</Text>
+        <Text style={styles.headerTitle}>Notifications</Text>
       </View>
 
       <FlatList
@@ -35,10 +32,10 @@ export default function Notifications() {
 
 function NoNotificationsFound() {
   return (
+
     <View style={[styles.container, styles.centered]}>
       <Ionicons name="notifications-outline" size={48} color={COLORS.primary} />
       <Text style={{ fontSize: 20, color: COLORS.white }}>No notifications yet</Text>
-
-    </View>
+      </View>
   )
 }
