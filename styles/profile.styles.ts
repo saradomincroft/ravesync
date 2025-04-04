@@ -117,15 +117,15 @@ export const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "flex-end",
+    backgroundColor: "black",
+    paddingTop: 50,
   },
   modalContent: {
     backgroundColor: COLORS.background,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    minHeight: 400,
+    height: "100%",
   },
   modalHeader: {
     flexDirection: "row",
@@ -162,7 +162,8 @@ export const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
     alignItems: "center",
-    marginTop: 20,
+    marginTop: "auto",
+    marginBottom: 50,
   },
   saveButtonText: {
     color: COLORS.background,

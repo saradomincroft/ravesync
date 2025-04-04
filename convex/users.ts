@@ -12,6 +12,7 @@ export const createUser = mutation({
   },
   handler: async (ctx, args) => {
     const username = args.email.split('@')[0];
+    const userImage = args.image || "../assets/images/icon.png";
     const existingUser = await ctx.db
       .query("users")
       .withIndex("by_clerk_id", (q) => q.eq("clerkId", args.clerkId))
@@ -23,7 +24,7 @@ export const createUser = mutation({
       username,
       email: args.email,
       bio: args.bio,
-      image: args.image,
+      image: userImage,
       followers: 0,
       following: 0,
       posts: 0,

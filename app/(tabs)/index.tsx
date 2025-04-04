@@ -13,7 +13,7 @@ export default function Index() {
   const {signOut} = useAuth();
   const posts = useQuery(api.posts.getFeedPosts)
 
-  if(posts === undefined) return <Loader />
+  if (!posts || !Array.isArray(posts)) return <Loader />;
   if(posts.length === 0) return <NoPostsFound />
 
   return (
@@ -32,7 +32,7 @@ export default function Index() {
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 60}}
-        ListHeaderComponent={<StoriesSection />}
+        // ListHeaderComponent={<StoriesSection />}
       />
     </View>
   );

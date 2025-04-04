@@ -1,4 +1,3 @@
-// styles/auth.styles.ts
 import { COLORS } from "@/constants/theme";
 import { Platform, StyleSheet, Dimensions } from "react-native";
 
@@ -66,16 +65,10 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.primary,
     fontWeight: "500",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', // Replaced shadow* with boxShadow
     ...Platform.select({
       ios: {
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.15,
-        shadowRadius: 12,
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)', // Updated for iOS as well
       },
       android: {
         elevation: 5,
@@ -92,12 +85,10 @@ export const styles = StyleSheet.create({
     maxWidth: 300,
     alignItems: "center",
     justifyContent: "center",
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)', // Updated shadow for boxShadow
     ...Platform.select({
       ios: {
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.15,
-        shadowRadius: 12,
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
       },
       android: {
         elevation: 5,
@@ -126,15 +117,13 @@ export const styles = StyleSheet.create({
     borderRadius: 14,
     width: "100%",
     maxWidth: 300,
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)', // Updated shadow for boxShadow
     ...Platform.select({
       ios: {
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 4 },
-          shadowOpacity: 0.15,
-          shadowRadius: 12,
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
       },
       android: {
-          elevation: 5,
+        elevation: 5,
       },
     }),
   },
@@ -160,43 +149,43 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     marginTop: 20,
-},
-tabButton: {
+  },
+  tabButton: {
     padding: 10,
     margin: 10,
     borderBottomWidth: 2,
     borderBottomColor: 'transparent',
-},
-activeTab: {
+  },
+  activeTab: {
     borderBottomColor: COLORS.primary,
-},
-tabText: {
+  },
+  tabText: {
     fontSize: 16,
     color: COLORS.grey,
-},
-activeTabText: {
+  },
+  activeTabText: {
     color: COLORS.primary,
-},
-genresContainer: {
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  marginVertical: 10,
-},
-genreButton: {
-  padding: 10,
-  margin: 5,
-  backgroundColor: COLORS.grey,
-  borderRadius: 5,
-},
-selectedGenre: {
-  backgroundColor: COLORS.primary,
-},
-genreText: {
-  color: COLORS.primary,
-},
-label: {
-  fontSize: 16,
-  fontWeight: 'bold',
-  marginBottom: 5,
-},
+  },
+  genresContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginVertical: 10,
+  },
+  genreButton: {
+    padding: 10,
+    margin: 5,
+    backgroundColor: COLORS.grey,
+    borderRadius: 5,
+  },
+  selectedGenre: {
+    backgroundColor: COLORS.primary,
+  },
+  genreText: {
+    color: COLORS.primary,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
 });
