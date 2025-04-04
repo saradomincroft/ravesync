@@ -10,9 +10,7 @@ export default function Notification({notification} : any) {
     return (
       <View style={styles.notificationItem}>
         <View style={styles.notificationContent}>
-          {/* todo: fix later - don't have user profile yet */}
-          {/* <Link href={`/user/${notification.sender._id}`} asChild> */}
-          <Link href={`/notifications`} asChild>
+          <Link href={`/user/${notification.sender._id}`} asChild>
             <TouchableOpacity style={styles.avatarContainer}>
               <Image
                 source={notification.sender.image}
