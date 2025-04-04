@@ -6,15 +6,26 @@ import { api } from "@/convex/_generated/api";
 import { useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "../../styles/feed.styles";
+import { useState } from "react";
 
 export default function Index() {
   const {signOut} = useAuth();
-  const posts = useQuery(api.posts.getFeedPosts)
+  const [refreshing, setRefreshing] = useState(false);
+  const posts = useQuery(api.posts.getFeedPosts);
 
   if (!posts || !Array.isArray(posts)) return <Loader />;
   if(posts.length === 0) return <NoPostsFound />
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      // tanstack query - to refetch a query (not in vid todo: lookinto)
+    },2000)
+
+  }
 
   return (
     <View style={styles.container}>
@@ -32,6 +43,13 @@ export default function Index() {
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 60}}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={COLORS.primary}
+          />
+        }
         // ListHeaderComponent={<StoriesSection />}
       />
     </View>

@@ -7,6 +7,8 @@ import { useFonts } from "expo-font";
 import { useCallback, useEffect } from "react";
 import * as NavigationBar from "expo-navigation-bar";
 import { Platform } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+// status bar (time/ battery etc at top)
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,6 +39,7 @@ export default function RootLayout() {
           </SafeAreaView>
         </SafeAreaProvider>
       </ClerkAndConvexProvider>
+      <StatusBar style="light" />
     </GestureHandlerRootView>
   );
 }

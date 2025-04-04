@@ -58,3 +58,22 @@
 # Resources
 - https://reactnative.directory/
 - https://docs.swmansion.com/react-native-reanimated/
+
+## Above React Native Reanimated
+- Smooth animations
+
+# Deployment (Building and publishing)
+- Can build app for production with Expo Application Services (EAS)
+- Can submit to Google Play/ App store but need a dev account
+- Takes couple of days/ weeks before it gets accepted and goes live
+- https://docs.expo.dev/deploy/build-project/
+- https://docs.expo.dev/deploy/submit-to-app-stores/
+
+## Steps
+- Visit expo.dev and signup
+- npm i -g eas-cli
+- eas login
+- eas init & will ask you to create a project - say yes
+- eas build --platform android => builds for android => give you APK file
+- eas build --platform ios => builds for ios => give you IPA file
+- Take files and submit to play/ app store
