@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Pressable, FlatList } from 'react-native'
 import React from 'react'
 import { useMutation, useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
-import { useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Id } from '@/convex/_generated/dataModel'
 import { Loader } from '@/components/Loader'
 import { styles } from '@/styles/profile.styles'
@@ -14,12 +14,16 @@ import { Image } from 'expo-image'
 
 export default function UserProfileScren() {
     const {id} = useLocalSearchParams()
+    const router = useRouter();
     const profile = useQuery(api.users.getUserProfile, {id: id as Id<"users">})
     const posts = useQuery(api.posts.getPostsByUser, {userId: id as Id<"users">})
     const isFollowing = useQuery(api.users.isFollowing, {followingId: id as Id<"users">})
     const toggleFollow = useMutation(api.users.toggleFollow)
 
-    const handleBack = () => {}
+    const handleBack = () => {
+        if(router.canGoBack()) router.back();
+        else router.replace("/(tabs)");
+    };
 
     if (profile === undefined || posts === undefined || isFollowing ===undefined) return <Loader />
 
