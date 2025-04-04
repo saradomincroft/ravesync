@@ -1,5 +1,5 @@
 // [] because dynami
-import { View, Text, TouchableOpacity, Pressable } from 'react-native'
+import { View, Text, TouchableOpacity, Pressable, FlatList } from 'react-native'
 import React from 'react'
 import { useMutation, useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
@@ -15,7 +15,7 @@ import { Image } from 'expo-image'
 export default function UserProfileScren() {
     const {id} = useLocalSearchParams()
     const profile = useQuery(api.users.getUserProfile, {id: id as Id<"users">})
-    const posts = useQuery(api.users.getUserProfile, {id: id as Id<"users">})
+    const posts = useQuery(api.posts.getPostsByUser, {userId: id as Id<"users">})
     const isFollowing = useQuery(api.users.isFollowing, {followingId: id as Id<"users">})
     const toggleFollow = useMutation(api.users.toggleFollow)
 
@@ -70,6 +70,32 @@ export default function UserProfileScren() {
                     </Text>
                 </Pressable>
 
+                <View style={styles.postsGrid}>
+                    {posts.length === 0 ? (
+                        <View style={styles.noPostsContainer}>
+                            <Ionicons name="images-outline" size={48} color={COLORS.grey} />
+                            <Text style={styles.noPostsText}>No posts yet</Text>
+                        </View>
+                    ) : (
+                        <FlatList
+                            data={posts}
+                            numColumns={3}
+                            scrollEnabled={false}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity style={styles.gridItem}>
+                                    <Image
+                                        source={item.imageUrl}
+                                        style={styles.gridImage}
+                                        contentFit="cover"
+                                        transition={200}
+                                        cachePolicy="memory-disk"
+                                    />
+                                </TouchableOpacity>
+                            )}
+                            keyExtractor={(item) => item._id}
+                        />
+                    )}
+                </View>
                 </View>
         </ScrollView>
     </View>
