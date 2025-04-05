@@ -7,10 +7,12 @@ import { useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
 import { FlatList, RefreshControl, Text, TouchableOpacity, View } from "react-native";
-import { styles } from "../../styles/feed.styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { styles } from "@/styles/feed.styles";
+
 
 export default function Index() {
+  
   const {signOut} = useAuth();
   const [refreshing, setRefreshing] = useState(false);
   const posts = useQuery(api.posts.getFeedPosts);
@@ -29,33 +31,35 @@ export default function Index() {
 
   return (
     <LinearGradient
-    colors={COLORS.backgroundGradient}
-    start={{ x: 0.2, y: 0 }}
-    end={{ x: 0.8, y: 1 }}
-    style={styles.container}
-  >
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>RaveSync</Text>
-          <TouchableOpacity onPress={() => signOut()}>
-            <Ionicons name="log-out-outline" size={24} color={COLORS.white} />
-          </TouchableOpacity>
-      </View>
+      colors={COLORS.backgroundGradient}
+      start={{ x: 0.2, y: 0 }}
+      end={{ x: 0.8, y: 1 }}
+      style={styles.container}
+    >
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>RaveSync</Text>
+            <TouchableOpacity onPress={() => signOut()}>
+              <Ionicons name="log-out-outline" size={24} color={COLORS.white} />
+            </TouchableOpacity>
+        </View>
 
-      <FlatList
-        data={posts}
-        renderItem={({item}) => <Post post={item} />}
-        keyExtractor={(item) => item._id}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 60}}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor={COLORS.primary}
-          />
-        }
-        // ListHeaderComponent={<StoriesSection />}
-      />
+        <FlatList
+          data={posts}
+          renderItem={({item}) => <Post post={item} />}
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingBottom: 60}}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={COLORS.primary}
+            />
+          }
+          // ListHeaderComponent={<StoriesSection />}
+        />
+      </View>
     </LinearGradient>
   );
 }

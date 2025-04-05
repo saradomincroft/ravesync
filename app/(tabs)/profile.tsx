@@ -7,10 +7,10 @@ import { useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useMutation, useQuery } from "convex/react";
 import { useState } from "react";
-import { View, Text, TouchableOpacity, Modal, Keyboard, KeyboardAvoidingView, Platform } from "react-native";
+import { View, Text, TouchableOpacity, Modal, Keyboard, KeyboardAvoidingView, Platform, TextInput, TouchableWithoutFeedback  } from "react-native";
 import { FlatList, ScrollView } from "react-native";
 import { Image } from "expo-image";
-import { TextInput, TouchableWithoutFeedback } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Profile() {
   const { signOut, userId } = useAuth();
@@ -35,6 +35,12 @@ export default function Profile() {
   if (!currentUser || posts === undefined) return <Loader/>
 
   return (
+    <LinearGradient
+      colors={COLORS.backgroundGradient}
+      start={{ x: 0.2, y: 0 }}
+      end={{ x: 0.8, y: 1 }}
+      style={styles.container}
+    >   
     <View style={styles.container}>
       {/*HEADER */}
         <View style={styles.container}>
@@ -107,7 +113,6 @@ export default function Profile() {
               </TouchableOpacity>
             )}
           />
-
         </ScrollView>
 
         {/* EDIT PROFILE MODAL */}
@@ -185,21 +190,20 @@ export default function Profile() {
             )}
           </View>
         </Modal>
-
+        </View>
       </View>
-    </View>
+    </LinearGradient>
   )
 }
 
 function NoPostsFound() {
   return (
     <View
-    style={{
-      height: "100%",
-      backgroundColor: COLORS.background,
-      justifyContent: "center",
-      alignItems: "center",
-    }}
+      style={{
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
       <Ionicons name="images-outline" size={48} color={COLORS.primary} />
       <Text style={{ fontSize: 20, color: COLORS.white }}>No posts yet</Text>

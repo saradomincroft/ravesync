@@ -21,24 +21,24 @@ export default function Notifications() {
       end={{ x: 0.8, y: 1 }}
       style={styles.container}
     >
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Notifications</Text>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Notifications</Text>
+        </View>
+        <FlatList
+          data={notifications}
+          renderItem={({item}) => <Notification notification={item} /> }
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.listContainer}
+        />
       </View>
-
-      <FlatList
-        data={notifications}
-        renderItem={({item}) => <Notification notification={item} /> }
-        keyExtractor={(item) => item._id}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContainer}
-      />
     </LinearGradient>
   );
 }
 
 function NoNotificationsFound() {
   return (
-
     <View style={[styles.container, styles.centered]}>
       <Ionicons name="notifications-outline" size={48} color={COLORS.primary} />
       <Text style={{ fontSize: 20, color: COLORS.white }}>No notifications yet</Text>

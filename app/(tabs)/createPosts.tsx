@@ -4,13 +4,13 @@ import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityI
 import { Image } from "expo-image"
 import { Alert } from "react-native"
 import { useState, useEffect } from "react";
-import { styles } from "../../styles/create.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "@/constants/theme";
 import * as ImagePicker from "expo-image-picker";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import * as FileSystem from "expo-file-system";
+import { styles } from "@/styles/create.styles"
 
 export default function CreatePosts() {
 
@@ -56,7 +56,7 @@ export default function CreatePosts() {
       setSelectedImage(null);
       setCaption("");
 
-      router.push("/(tabs)")
+      router.push("../(tabs)")
     } catch (error) {
       Alert.alert( "An error occurred while sharing the post.");    
     } finally {

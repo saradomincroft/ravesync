@@ -21,32 +21,33 @@ export default function Bookmarks() {
       end={{ x: 0.8, y: 1 }}
       style={styles.container}
     >      
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Bookmarks</Text>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Bookmarks</Text>
+        </View>
+
+        {/* POSTS */}
+        <FlatList
+          data={bookmarkedPosts}
+          keyExtractor={(item, index) => (item?._id ? item._id.toString() : index.toString())}
+          numColumns={3}
+          contentContainerStyle={{ padding: 8 }}
+          renderItem={({ item }) => {
+            if (!item) return null;
+            return (
+              <View key={item._id} style={{ width: "33.33%", padding: 1 }}>
+                <Image
+                  source={item.imageUrl}
+                  style={{ width: "100%", aspectRatio: 1 }}
+                  contentFit="cover"
+                  transition={200}
+                  cachePolicy="memory-disk"
+                />
+              </View>
+            );
+          }}
+        />
       </View>
-
-      {/* POSTS */}
-
-      <FlatList
-        data={bookmarkedPosts}
-        keyExtractor={(item, index) => (item?._id ? item._id.toString() : index.toString())}
-        numColumns={3}
-        contentContainerStyle={{ padding: 8 }}
-        renderItem={({ item }) => {
-          if (!item) return null;
-          return (
-            <View key={item._id} style={{ width: "33.33%", padding: 1 }}>
-              <Image
-                source={item.imageUrl}
-                style={{ width: "100%", aspectRatio: 1 }}
-                contentFit="cover"
-                transition={200}
-                cachePolicy="memory-disk"
-              />
-            </View>
-          );
-        }}
-      />
     </LinearGradient>
   )
 }
@@ -54,20 +55,20 @@ export default function Bookmarks() {
 function NoBookmarksFound() {
   return (
     <LinearGradient
-    colors={COLORS.backgroundGradient}
-    start={{ x: 0.2, y: 0 }}
-    end={{ x: 0.8, y: 1 }}
-    style={styles.container}
-  >   
-    <View
-      style={{
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      }}
-    >
-      <Text style={{ color: COLORS.primary, fontSize: 22 }}>No bookmarked posts yet</Text>
-    </View>
+      colors={COLORS.backgroundGradient}
+      start={{ x: 0.2, y: 0 }}
+      end={{ x: 0.8, y: 1 }}
+      style={styles.container}
+    >   
+      <View
+        style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        }}
+      >
+        <Text style={{ color: COLORS.primary, fontSize: 22 }}>No bookmarked posts yet</Text>
+      </View>
     </LinearGradient>
   )
 }

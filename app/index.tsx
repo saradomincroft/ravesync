@@ -5,5 +5,5 @@ export default function Index() {
   const { isSignedIn, isLoaded } = useAuth();
 
 
-  return isSignedIn ? <Redirect href="/(tabs)" /> : <Redirect href="/(auth)/loginSignup" />;
+  return isSignedIn ? <Redirect href="/(tabs)/(home)" /> : <Redirect href="/(auth)/loginSignup" />;
 }
