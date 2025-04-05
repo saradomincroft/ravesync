@@ -5,7 +5,8 @@ import { api } from '@/convex/_generated/api';
 import { Loader } from '@/components/Loader';
 import { styles } from '@/styles/feed.styles';
 import { Image } from 'expo-image';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Bookmarks() {
   const bookmarkedPosts = useQuery(api.bookmarks.getBookmarkedPosts);
@@ -14,7 +15,12 @@ export default function Bookmarks() {
   if (bookmarkedPosts.length === 0) return <NoBookmarksFound />;
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={COLORS.backgroundGradient}
+      start={{ x: 0.2, y: 0 }}
+      end={{ x: 0.8, y: 1 }}
+      style={styles.container}
+    >      
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Bookmarks</Text>
       </View>
@@ -41,21 +47,27 @@ export default function Bookmarks() {
           );
         }}
       />
-    </View>
+    </LinearGradient>
   )
 }
 
 function NoBookmarksFound() {
   return (
+    <LinearGradient
+    colors={COLORS.backgroundGradient}
+    start={{ x: 0.2, y: 0 }}
+    end={{ x: 0.8, y: 1 }}
+    style={styles.container}
+  >   
     <View
       style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: COLORS.background,
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
       }}
     >
       <Text style={{ color: COLORS.primary, fontSize: 22 }}>No bookmarked posts yet</Text>
     </View>
+    </LinearGradient>
   )
 }

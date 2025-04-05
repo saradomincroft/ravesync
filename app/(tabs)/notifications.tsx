@@ -5,6 +5,7 @@ import { api } from '@/convex/_generated/api';
 import { styles } from '@/styles/notifications.styles';
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from 'convex/react';
+import { LinearGradient } from 'expo-linear-gradient';
 import { FlatList, Text, View } from 'react-native';
 
 export default function Notifications() {
@@ -14,7 +15,12 @@ export default function Notifications() {
   if (notifications.length === 0) return <NoNotificationsFound />;
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={COLORS.backgroundGradient}
+      start={{ x: 0.2, y: 0 }}
+      end={{ x: 0.8, y: 1 }}
+      style={styles.container}
+    >
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Notifications</Text>
       </View>
@@ -26,7 +32,7 @@ export default function Notifications() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContainer}
       />
-    </View>
+    </LinearGradient>
   );
 }
 

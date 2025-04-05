@@ -6,7 +6,6 @@ const { width, height } = Dimensions.get("window");
 export const styles = StyleSheet.create({
   container:{
     flex: 1,
-    backgroundColor: COLORS.background,
   },
   brandSection: {
     alignItems: "center",
@@ -65,10 +64,10 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.primary,
     fontWeight: "500",
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', // Replaced shadow* with boxShadow
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
     ...Platform.select({
       ios: {
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)', // Updated for iOS as well
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
       },
       android: {
         elevation: 5,
@@ -85,7 +84,7 @@ export const styles = StyleSheet.create({
     maxWidth: 300,
     alignItems: "center",
     justifyContent: "center",
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)', // Updated shadow for boxShadow
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
     ...Platform.select({
       ios: {
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',

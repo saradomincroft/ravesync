@@ -4,12 +4,18 @@ import { styles } from "@/styles/auth.styles";
 import { COLORS } from "@/constants/theme";
 import Login from "./login";
 import SignUp from "./signup";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function LoginSignup() {
     const [isSignUp, setIsSignUp] = useState(false);
 
     return (
-        <View style={styles.container}>
+        <LinearGradient
+            colors={COLORS.backgroundGradient}
+            start={{ x: 0.2, y: 0 }}
+            end={{ x: 0.8, y: 1 }}
+            style={styles.container}
+        >
             {/* BRAND SECTION */}
             <View style={styles.brandSection}>
                 <View style={styles.logoContainer}>
@@ -45,6 +51,7 @@ export default function LoginSignup() {
                         Login
                     </Text>
                 </TouchableOpacity>
+                
                 <TouchableOpacity
                     style={[
                         styles.tabButton,
@@ -63,6 +70,6 @@ export default function LoginSignup() {
                 </TouchableOpacity>
             </View>
             {isSignUp ? <SignUp /> : <Login />}
-        </View>
+        </LinearGradient>
     );
 }

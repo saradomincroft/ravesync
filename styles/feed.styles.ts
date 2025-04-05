@@ -7,7 +7,6 @@ const { width } = Dimensions.get("window");
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
   },
   header: {
     flexDirection: "row",
@@ -38,7 +37,6 @@ export const styles = StyleSheet.create({
     height: 68,
     borderRadius: 34,
     padding: 2,
-    backgroundColor: COLORS.background,
     borderWidth: 2,
     borderColor: COLORS.primary,
     marginBottom: 4,
@@ -51,7 +49,6 @@ export const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: COLORS.background,
   },
   storyUsername: {
     fontSize: 11,
@@ -134,7 +131,6 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
   },
   modalContainer: {
-    backgroundColor: COLORS.background,
     marginBottom: Platform.OS === "ios" ? 44 : 0,
     flex: 1,
     marginTop: Platform.OS === "ios" ? 44 : 0,

@@ -1,6 +1,6 @@
 import { Loader } from "@/components/Loader";
 import Post from "@/components/Post";
-import StoriesSection from "@/components/Stories";
+import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from "@/constants/theme";
 import { api } from "@/convex/_generated/api";
 import { useAuth } from "@clerk/clerk-expo";
@@ -28,8 +28,12 @@ export default function Index() {
   }
 
   return (
-    <View style={styles.container}>
-      {/* HEADER */}
+    <LinearGradient
+    colors={COLORS.backgroundGradient}
+    start={{ x: 0.2, y: 0 }}
+    end={{ x: 0.8, y: 1 }}
+    style={styles.container}
+  >
       <View style={styles.header}>
         <Text style={styles.headerTitle}>RaveSync</Text>
           <TouchableOpacity onPress={() => signOut()}>
@@ -52,7 +56,7 @@ export default function Index() {
         }
         // ListHeaderComponent={<StoriesSection />}
       />
-    </View>
+    </LinearGradient>
   );
 }
 
