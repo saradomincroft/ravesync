@@ -52,6 +52,27 @@ export const updateProfile = mutation({
   },
   handler: async (ctx, args) => {
     const currentUser = await getAuthenticatedUser(ctx);
+    const normalizedUsername = args.username.toLowerCase();
+
+    if (normalizedUsername !== currentUser.username) {
+
+      if (normalizedUsername.length > 16) {
+        throw new Error("Username must be 16 characters or less.");
+      }
+      
+      if (/\s/.test(normalizedUsername)) {
+        throw new Error("Username cannot contain spaces.");
+      }
+
+      const existingUser = await ctx.db
+        .query("users")
+        .withIndex("by_username", (q) => q.eq("username", normalizedUsername ))
+        .first();
+
+      if (existingUser) {
+        throw new Error("Username already taken");
+      }
+    }
 
     await ctx.db.patch(currentUser._id, {
       username: args.username,

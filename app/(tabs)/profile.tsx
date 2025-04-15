@@ -28,8 +28,19 @@ export default function Profile() {
   const updateProfile = useMutation(api.users.updateProfile);
 
   const handleSaveProfile = async () => {
-    await updateProfile(editedProfile);
-    setIsEditedModalVisible(false);
+    const trimmedUsername = editedProfile.username.trim();
+
+    if (trimmedUsername.length === 0 || trimmedUsername.length > 16 || /\s/.test(trimmedUsername)) {
+      alert("Username must be between 1 and 16 characters");
+      return;
+    }
+      try {
+        await updateProfile(editedProfile);
+        setIsEditedModalVisible(false);
+      }catch (error) {
+        // Handle any errors from the mutation
+        alert('Error updating profile. Please try again.');
+    }
   }
 
   if (!currentUser || posts === undefined) return <Loader/>

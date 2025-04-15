@@ -13,7 +13,9 @@ export default defineSchema({
         followedGenres: v.optional(v.array(v.id("genres"))),
         followedLocations: v.optional(v.array(v.id("locations"))),
         clerkId: v.string(),
-    }).index("by_clerk_id", ["clerkId"]),
+    })
+        .index("by_clerk_id", ["clerkId"])
+        .index("by_username", ["username"]),
 
     posts: defineTable({
         userId: v.id("users"), // Owner of the post
