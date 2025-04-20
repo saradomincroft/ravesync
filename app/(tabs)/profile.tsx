@@ -16,7 +16,8 @@ export default function Profile() {
   const { signOut, userId } = useAuth();
   const [isEditModalVisible, setIsEditedModalVisible] = useState(false);
   const currentUser = useQuery(api.users.getUserByClerkId, userId ? {clerkId: userId } : "skip" );
-  
+  const allUsers = useQuery(api.users.getAllUsers, {});
+
   const [editedProfile, setEditedProfile] = useState({
     username: currentUser?.username || "",
     bio: currentUser?.bio || "",
@@ -29,18 +30,31 @@ export default function Profile() {
 
   const handleSaveProfile = async () => {
     const trimmedUsername = editedProfile.username.trim();
-
-    if (trimmedUsername.length === 0 || trimmedUsername.length > 16 || /\s/.test(trimmedUsername)) {
+    
+    if (trimmedUsername.length === 0 || trimmedUsername.length > 16) {
       alert("Username must be between 1 and 16 characters");
+      return;
+    }
+    if (/\s/.test(trimmedUsername)) {
+      alert("Username cannot contain spaces");
+      return;
+    }
+
+    const usernameTaken = allUsers?.some(user => 
+      user.username.toLowerCase() === trimmedUsername && 
+      user._id !== currentUser?._id
+    );
+    if (usernameTaken) {
+      alert("Username already taken");
       return;
     }
       try {
         await updateProfile(editedProfile);
         setIsEditedModalVisible(false);
-      }catch (error) {
+      }catch (error: any) {
         // Handle any errors from the mutation
-        alert('Error updating profile. Please try again.');
-    }
+        const message = error?.message || 'Error updating profile. Please try again.';
+        alert(message);    }
   }
 
   if (!currentUser || posts === undefined) return <Loader/>
@@ -131,7 +145,13 @@ export default function Profile() {
           visible={isEditModalVisible}
           animationType="slide"
           transparent={true}
-          onRequestClose={() => setIsEditedModalVisible(false)}
+          onRequestClose={() => {
+            setIsEditedModalVisible(false);
+            setEditedProfile({
+              username: currentUser.username,
+              bio: currentUser.bio || "",
+            });
+          }}
         >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <KeyboardAvoidingView
@@ -141,7 +161,13 @@ export default function Profile() {
               <View style={styles.modalContainer}>
                 <View style={styles.modalHeader}>
                   <Text style={styles.modalTitle}>Edit Profile</Text>
-                  <TouchableOpacity onPress={() => setIsEditedModalVisible(false)}>
+                  <TouchableOpacity onPress={() => {
+                    setIsEditedModalVisible(false);
+                    setEditedProfile({
+                      username: currentUser.username,
+                      bio: currentUser.bio || "",
+                    });
+                    }}>
                     <Ionicons name="close" size={24} color={COLORS.white} />
                   </TouchableOpacity>
                 </View>

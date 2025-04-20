@@ -13,7 +13,7 @@ export const createUser = mutation({
   },
   handler: async (ctx, args) => {
     const username = args.email.split('@')[0];
-    const userImage = args.image || "../assets/images/icon.png";
+    const userImage = args.image || "../assets/images/default-user.svg";
     const existingUser = await ctx.db
       .query("users")
       .withIndex("by_clerk_id", (q) => q.eq("clerkId", args.clerkId))
@@ -99,7 +99,6 @@ export async function getAuthenticatedUser(ctx:QueryCtx | MutationCtx) {
   return currentUser;
 };
 
-
 export const getUserProfile = query({
   args: {id: v.id("users")},
   handler: async (ctx, args) => {
@@ -108,6 +107,14 @@ export const getUserProfile = query({
 
       return user
   }
+});
+
+export const getAllUsers = query({
+  args: {},
+  handler: async (ctx) => {
+    const users = await ctx.db.query("users").collect();
+    return users;
+  },
 });
 
 export const isFollowing = query({
