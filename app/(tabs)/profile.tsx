@@ -10,6 +10,7 @@ import { useState } from "react";
 import { View, Text, TouchableOpacity, Modal, Keyboard, KeyboardAvoidingView, Platform, TextInput, TouchableWithoutFeedback  } from "react-native";
 import { FlatList, ScrollView } from "react-native";
 import { Image } from "expo-image";
+import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
 
 export default function Profile() {
@@ -17,16 +18,41 @@ export default function Profile() {
   const [isEditModalVisible, setIsEditedModalVisible] = useState(false);
   const currentUser = useQuery(api.users.getUserByClerkId, userId ? {clerkId: userId } : "skip" );
   const allUsers = useQuery(api.users.getAllUsers, {});
+  const [profileRefreshTrigger, setProfileRefreshTrigger] = useState(0);
+
 
   const [editedProfile, setEditedProfile] = useState({
     username: currentUser?.username || "",
     bio: currentUser?.bio || "",
+    image: currentUser?.image || "",
   });
 
   const [selectedPost, setSelectedPost] = useState<Doc<"posts"> | null>(null);
   const posts = useQuery(api.posts.getPostsByUser, {});
 
   const updateProfile = useMutation(api.users.updateProfile);
+
+  const handleImagePicker = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status != 'granted') {
+      alert('Sorry, we need permission to access your camera roll.');
+      return;
+    }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setEditedProfile(prev => ({
+        ...prev,
+        image: result.assets[0].uri,
+      }));
+    }
+  };
+  
 
   const handleSaveProfile = async () => {
     const trimmedUsername = editedProfile.username.trim();
@@ -148,6 +174,7 @@ export default function Profile() {
           onRequestClose={() => {
             setIsEditedModalVisible(false);
             setEditedProfile({
+              image: currentUser.image || "",
               username: currentUser.username,
               bio: currentUser.bio || "",
             });
@@ -161,9 +188,20 @@ export default function Profile() {
               <View style={styles.modalContainer}>
                 <View style={styles.modalHeader}>
                   <Text style={styles.modalTitle}>Edit Profile</Text>
+                  <Image
+                    source={{ uri: editedProfile.image || currentUser.image }}
+                    style={styles.avatar}
+                    contentFit="cover"
+                    transition={200}
+                  />
+                  <TouchableOpacity style={styles.imageButton} onPress={handleImagePicker}>
+                    <Text style={styles.saveButtonText}>Change Profile Image</Text>
+                  </TouchableOpacity>
+
                   <TouchableOpacity onPress={() => {
                     setIsEditedModalVisible(false);
                     setEditedProfile({
+                      image: currentUser.image || "",
                       username: currentUser.username,
                       bio: currentUser.bio || "",
                     });

@@ -49,6 +49,7 @@ export const updateProfile = mutation({
   args: {
     username: v.string(),
     bio: v.optional(v.string()),
+    image: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const currentUser = await getAuthenticatedUser(ctx);
@@ -66,7 +67,7 @@ export const updateProfile = mutation({
 
       const existingUser = await ctx.db
         .query("users")
-        .withIndex("by_username", (q) => q.eq("username", normalizedUsername ))
+        .withIndex("by_username", (q) => q.eq("username", normalizedUsername))
         .first();
 
       if (existingUser) {
@@ -74,12 +75,19 @@ export const updateProfile = mutation({
       }
     }
 
-    await ctx.db.patch(currentUser._id, {
+    const updateFields: any = {
       username: args.username,
       bio: args.bio,
-    });
+    };
+
+    if (args.image) {
+      updateFields.image = args.image;
+    }
+
+    await ctx.db.patch(currentUser._id, updateFields);
   },
 });
+
 
 export async function getAuthenticatedUser(ctx:QueryCtx | MutationCtx) {
   const identity = await ctx.auth.getUserIdentity();

@@ -239,4 +239,10 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
     color: COLORS.white,
   },
+  imageButton: {
+    backgroundColor: COLORS.primary,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+  },
 });
