@@ -85,6 +85,8 @@ export const updateProfile = mutation({
     }
 
     await ctx.db.patch(currentUser._id, updateFields);
+    const updatedUser = await ctx.db.get(currentUser._id);
+    return updatedUser;
   },
 });
 
@@ -193,4 +195,24 @@ async function updateFollowCounts(
       });
   }
 }
+
+export const getFollowedUsers = query({
+  args: {},
+  handler: async (ctx) => {
+    const currentUser = await getAuthenticatedUser(ctx);
+
+    const following = await ctx.db
+      .query("follows")
+      .withIndex("by_follower", (q) => q.eq("followerId", currentUser._id))
+      .collect();
+
+    const followedUserIds = following.map((f) => f.followingId);
+    const followedUsers = await ctx.db
+      .query("users")
+      .collect()
+      .then(users => users.filter(user => followedUserIds.includes(user._id)));
+
+    return followedUsers;
+  }
+})
 

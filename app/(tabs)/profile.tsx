@@ -18,8 +18,6 @@ export default function Profile() {
   const [isEditModalVisible, setIsEditedModalVisible] = useState(false);
   const currentUser = useQuery(api.users.getUserByClerkId, userId ? {clerkId: userId } : "skip" );
   const allUsers = useQuery(api.users.getAllUsers, {});
-  const [profileRefreshTrigger, setProfileRefreshTrigger] = useState(0);
-
 
   const [editedProfile, setEditedProfile] = useState({
     username: currentUser?.username || "",

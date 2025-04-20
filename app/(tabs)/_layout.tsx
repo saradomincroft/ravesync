@@ -24,7 +24,15 @@ export default function TabLayout() {
         name="(home)"
         options={{
           tabBarIcon: ({ size, color }: { size: number; color: string }) => (
-            <Ionicons name="home" size={size} color={color} />
+            <Ionicons name="globe" size={size} color={color} />
+          ),
+        }}
+      />
+            <Tabs.Screen
+        name="followingUsers"
+        options={{
+          tabBarIcon: ({ size, color }: { size: number; color: string }) => (
+            <Ionicons name="people" size={size} color={color} />
           ),
         }}
       />

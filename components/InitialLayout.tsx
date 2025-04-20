@@ -11,7 +11,7 @@ export default function InitialLayout() {
         if(!isLoaded) return
         const inAuthScreen = segments[0] === "(auth)"
         if(!isSignedIn && !inAuthScreen) router.replace("/(auth)/loginSignup")
-            else if(isSignedIn && inAuthScreen) router.replace("/(tabs)")
+            else if(isSignedIn && inAuthScreen) router.replace("/(tabs)" as any)
     }, [isLoaded, isSignedIn, segments])
 
     if(!isLoaded) return null
