@@ -20,6 +20,7 @@ export default function UserProfileScreen() {
     const posts = useQuery(api.posts.getPostsByUser, {userId: id as Id<"users">})
     const isFollowing = useQuery(api.users.isFollowing, {followingId: id as Id<"users">})
     const toggleFollow = useMutation(api.users.toggleFollow)
+    const sortedPosts = posts?.slice().sort((a, b) => b._creationTime - a._creationTime);
 
     const handleBack = () => {
         if(router.canGoBack()) router.back();
@@ -88,7 +89,7 @@ export default function UserProfileScreen() {
                             </View>
                         ) : (
                             <FlatList
-                                data={posts}
+                                data={sortedPosts}
                                 numColumns={3}
                                 scrollEnabled={false}
                                 renderItem={({ item }) => (
