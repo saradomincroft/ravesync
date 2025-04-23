@@ -214,4 +214,23 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  metaInfo: {
+    paddingHorizontal: 12,
+    paddingTop: 4,
+    paddingBottom: 6,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 12,
+  },
+  
+  metaText: {
+    color: COLORS.white,
+    fontSize: 13,
+  },
+  
+  metaLabel: {
+    fontWeight: "bold",
+    color: COLORS.white,
+  },
+  
 });
