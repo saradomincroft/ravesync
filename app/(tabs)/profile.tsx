@@ -18,6 +18,8 @@ export default function Profile() {
   const [isEditModalVisible, setIsEditedModalVisible] = useState(false);
   const currentUser = useQuery(api.users.getUserByClerkId, userId ? {clerkId: userId } : "skip" );
   const allUsers = useQuery(api.users.getAllUsers, {});
+  const posts = useQuery(api.posts.getPostsByUser, {});
+  const sortedPosts = posts?.slice().sort((a, b) => b._creationTime - a._creationTime);
 
   const [editedProfile, setEditedProfile] = useState({
     username: currentUser?.username || "",
@@ -26,7 +28,6 @@ export default function Profile() {
   });
 
   const [selectedPost, setSelectedPost] = useState<Doc<"posts"> | null>(null);
-  const posts = useQuery(api.posts.getPostsByUser, {});
 
   const updateProfile = useMutation(api.users.updateProfile);
 
@@ -146,9 +147,9 @@ export default function Profile() {
             </View>
           </View>
           {posts.length === 0 && <NoPostsFound /> }
-
+          
           <FlatList
-            data={posts}
+            data={sortedPosts}
             numColumns={3}
             scrollEnabled={false}
             renderItem={ ({item}) => (

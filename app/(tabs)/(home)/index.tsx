@@ -57,6 +57,7 @@ export default function Index() {
               tintColor={COLORS.primary}
             />
           }
+          // ListHeaderComponent={<StoriesSection />}
         />
       </View>
     </LinearGradient>
