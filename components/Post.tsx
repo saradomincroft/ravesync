@@ -27,7 +27,9 @@ type PostProps = {
             _id: Id<"users"> | undefined;
             username: string | undefined;
             image?: string;
-        }
+        };
+        location?: string;
+        genre?: string; 
           
     }
 }
@@ -36,7 +38,8 @@ export default function Post({post}: PostProps ) {
     const [isLiked, setIsLiked] = useState(post.isLiked);
     const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
     const [showComments, setShowComments] = useState(false);
-
+    const [showLocationModal, setShowLocationModal] = useState(false);
+    const [showGenreModal, setShowGenreModal] = useState(false);
     const {user} = useUser();
 
     const currentUser = useQuery(api.users.getUserByClerkId, user ?  {clerkId: user?.id} : "skip")
@@ -44,6 +47,9 @@ export default function Post({post}: PostProps ) {
     const toggleLike = useMutation(api.posts.toggleLike);
     const toggleBookmark = useMutation(api.bookmarks.toggleBookmark);
     const deletePost = useMutation(api.posts.deletePost);
+
+    const locations = useQuery(api.locations.getLocations, {});
+    const genres = useQuery(api.genres.getGenres);
     
     const handleLike = async () => {
         try {
@@ -66,6 +72,16 @@ export default function Post({post}: PostProps ) {
             console.error("Error deleting post:", error)
         }
     }
+
+    // const handleLocationSelect = (location: string) => {
+    //     setSelectedLocation(location);
+    //     setShowLocationModal(false);
+    // };
+
+    // const handleGenreSelect = (genre: string) => {
+    //     setSelectedGenre(genre);
+    //     setShowGenreModal(false);
+    // }
 
   return (
     <View style={styles.post}>

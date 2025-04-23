@@ -1,6 +1,6 @@
 // [] because dynami
 import { View, Text, TouchableOpacity, Pressable, FlatList } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useMutation, useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { useLocalSearchParams, useRouter } from 'expo-router'

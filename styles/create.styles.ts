@@ -146,4 +146,47 @@ export const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 10,
   },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  
+  modalContent: {
+    width: "80%",
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  
+  modalItem: {
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+  },
+  
+  closeModal: {
+    marginTop: 16,
+    textAlign: "center",
+    color: "#FF5C5C",
+    fontWeight: "600",
+  },
+  
+  dropdownButton: {
+    backgroundColor: "#f0f0f0",
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 16,
+  },
+  
+  dropdownText: {
+    color: "#333",
+    fontSize: 16,
+  },  
 });

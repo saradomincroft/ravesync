@@ -80,7 +80,9 @@ export const updateProfile = mutation({
       bio: args.bio,
     };
 
-    if (args.image) {
+    if (args.image === null || args.image === "") {
+      updateFields.image = "../assets/images/default-user.svg";
+    } else if (args.image) {
       updateFields.image = args.image;
     }
 

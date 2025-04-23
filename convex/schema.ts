@@ -38,13 +38,13 @@ export default defineSchema({
         name: v.string(),
     }),
 
-    // favouriteLocations: defineTable({
-    //     userId: v.id("users"), // User who favourited the location
-    //     locationId: v.id("locations"), // The location that has been favourited
-    // })
-    // .index("by_user", ["userId"])
-    // .index("by_location", ["locationId"])
-    // .index("by_user_and_location", ["userId", "locationId"]),
+    favouriteLocations: defineTable({
+        userId: v.id("users"), // User who favourited the location
+        locationId: v.id("locations"), // The location that has been favourited
+    })
+    .index("by_user", ["userId"])
+    .index("by_location", ["locationId"])
+    .index("by_user_and_location", ["userId", "locationId"]),
 
     likes: defineTable({
         userId: v.id("users"),

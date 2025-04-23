@@ -116,14 +116,13 @@ export const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: "black",
-    paddingTop: 50,
+    backgroundColor: "transparent",
+    paddingTop: 40,
+    // paddingHorizontal: 8,
   },
   modalContent: {
-    backgroundColor: COLORS.background,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 20,
     height: "100%",
   },
   modalHeader: {
@@ -132,6 +131,27 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
   },
+  imageSection: {
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  avatarLarge: {
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    borderWidth: 2,
+    borderColor: COLORS.surface,
+  },
+  imageActions: {
+    position: 'absolute',
+    top: 120,
+    right: -1,
+    backgroundColor: COLORS.primary,
+    borderRadius: 999,
+    padding: 8, 
+    alignItems: 'center',
+    justifyContent: 'center',
+  },  
   modalTitle: {
     color: COLORS.white,
     fontSize: 18,
@@ -144,6 +164,7 @@ export const styles = StyleSheet.create({
     color: COLORS.grey,
     marginBottom: 8,
     fontSize: 14,
+    marginHorizontal: 16
   },
   input: {
     backgroundColor: COLORS.surface,
@@ -151,10 +172,12 @@ export const styles = StyleSheet.create({
     padding: 12,
     color: COLORS.white,
     fontSize: 16,
+    marginHorizontal: 16
   },
   bioInput: {
     height: 100,
     textAlignVertical: "top",
+    marginHorizontal: 16
   },
   saveButton: {
     backgroundColor: COLORS.primary,
@@ -163,6 +186,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: "auto",
     marginBottom: 50,
+    marginHorizontal: 16
   },
   saveButtonText: {
     color: COLORS.background,

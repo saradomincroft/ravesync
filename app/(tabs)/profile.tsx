@@ -6,7 +6,7 @@ import { styles } from "@/styles/profile.styles";
 import { useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useMutation, useQuery } from "convex/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Modal, Keyboard, KeyboardAvoidingView, Platform, TextInput, TouchableWithoutFeedback  } from "react-native";
 import { FlatList, ScrollView } from "react-native";
 import { Image } from "expo-image";
@@ -20,12 +20,21 @@ export default function Profile() {
   const allUsers = useQuery(api.users.getAllUsers, {});
   const posts = useQuery(api.posts.getPostsByUser, {});
   const sortedPosts = posts?.slice().sort((a, b) => b._creationTime - a._creationTime);
-
   const [editedProfile, setEditedProfile] = useState({
-    username: currentUser?.username || "",
-    bio: currentUser?.bio || "",
-    image: currentUser?.image || "",
+    username: "",
+    bio: "",
+    image: "",
   });
+
+  useEffect(() => {
+    if (currentUser) {
+      setEditedProfile({
+        username: currentUser.username,
+        bio: currentUser.bio || "",
+        image: currentUser.image || "",
+      });
+    }
+  }, [currentUser]);
 
   const [selectedPost, setSelectedPost] = useState<Doc<"posts"> | null>(null);
 
@@ -51,10 +60,19 @@ export default function Profile() {
       }));
     }
   };
-  
+
+  const isUnchanged = (
+    editedProfile.username === currentUser?.username &&
+    editedProfile.bio === currentUser?.bio &&
+    editedProfile.image === currentUser?.image
+  );
 
   const handleSaveProfile = async () => {
     const trimmedUsername = editedProfile.username.trim();
+    const usernameTaken = allUsers?.some(user => 
+      user.username.toLowerCase() === trimmedUsername && 
+      user._id !== currentUser?._id
+    );
     
     if (trimmedUsername.length === 0 || trimmedUsername.length > 16) {
       alert("Username must be between 1 and 16 characters");
@@ -64,11 +82,6 @@ export default function Profile() {
       alert("Username cannot contain spaces");
       return;
     }
-
-    const usernameTaken = allUsers?.some(user => 
-      user.username.toLowerCase() === trimmedUsername && 
-      user._id !== currentUser?._id
-    );
     if (usernameTaken) {
       alert("Username already taken");
       return;
@@ -79,8 +92,9 @@ export default function Profile() {
       }catch (error: any) {
         // Handle any errors from the mutation
         const message = error?.message || 'Error updating profile. Please try again.';
-        alert(message);    }
-  }
+        alert(message);    
+      }
+    };
 
   if (!currentUser || posts === undefined) return <Loader/>
 
@@ -184,19 +198,16 @@ export default function Profile() {
               behavior={Platform.OS === "ios" ? "padding" : "height"}
               style={styles.modalContainer}
             >
-              <View style={styles.modalContainer}>
+
+
+        <LinearGradient
+          colors={COLORS.backgroundGradient}
+          start={{ x: 0.2, y: 0 }}
+          end={{ x: 0.8, y: 1 }}
+          style={styles.modalContainer}
+        >
                 <View style={styles.modalHeader}>
                   <Text style={styles.modalTitle}>Edit Profile</Text>
-                  <Image
-                    source={{ uri: editedProfile.image || currentUser.image }}
-                    style={styles.avatar}
-                    contentFit="cover"
-                    transition={200}
-                  />
-                  <TouchableOpacity style={styles.imageButton} onPress={handleImagePicker}>
-                    <Text style={styles.saveButtonText}>Change Profile Image</Text>
-                  </TouchableOpacity>
-
                   <TouchableOpacity onPress={() => {
                     setIsEditedModalVisible(false);
                     setEditedProfile({
@@ -207,6 +218,21 @@ export default function Profile() {
                     }}>
                     <Ionicons name="close" size={24} color={COLORS.white} />
                   </TouchableOpacity>
+                  </View>
+                <View style={{ position: 'relative', alignItems: 'center' }}>
+                  <View style={styles.imageSection}>
+                  <Image
+                    source={editedProfile.image ? { uri: editedProfile.image } : require('@/assets/images/default-user.svg')}
+                    style={styles.avatarLarge}
+                    contentFit="cover"
+                    transition={200}
+                  />
+                  <View style={styles.imageActions}>
+                    <TouchableOpacity onPress={handleImagePicker}>
+                      <Ionicons name="camera" size={24} color={COLORS.white} />
+                    </TouchableOpacity>
+                  </View>
+                  </View>
                 </View>
 
                 <View style={styles.inputContainer}>
@@ -231,11 +257,14 @@ export default function Profile() {
                     autoComplete="off"
                   />
                 </View>
-
-                <TouchableOpacity style={styles.saveButton} onPress={handleSaveProfile}>
+                <TouchableOpacity
+                  style={[styles.saveButton, isUnchanged && { opacity: 0.5 }]}
+                  disabled={isUnchanged}
+                  onPress={handleSaveProfile}
+                >
                   <Text style={styles.saveButtonText}>Save Changes</Text>
                 </TouchableOpacity>
-              </View>
+              </LinearGradient>
             </KeyboardAvoidingView>
           </TouchableWithoutFeedback>
         </Modal>
@@ -264,6 +293,7 @@ export default function Profile() {
             )}
           </View>
         </Modal>
+        
         </View>
       </View>
     </LinearGradient>
