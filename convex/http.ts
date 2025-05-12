@@ -58,7 +58,8 @@ http.route({
                     image: image_url || null,
                     clerkId: id,
                     bio: "",
-                    followedGenres: [],
+                    favouriteGenre: [],
+                    favouriteLocation: [],
                 });
             } catch (error) {
                 console.error("Error creating user:", error);

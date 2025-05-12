@@ -1,4 +1,3 @@
-// styles/feed.styles.ts
 import { COLORS } from "@/constants/theme";
 import { Dimensions, Platform, StyleSheet } from "react-native";
 
@@ -190,47 +189,62 @@ export const styles = StyleSheet.create({
     paddingVertical: 12,
     borderTopWidth: 0.5,
     borderTopColor: COLORS.surface,
-    backgroundColor: COLORS.background,
-  },
-  input: {
+    },
+    commentInputField: {
     flex: 1,
+    backgroundColor: COLORS.background,
+    padding: 12,
+    borderRadius: 25,
     color: COLORS.white,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    marginRight: 12,
-    backgroundColor: COLORS.surface,
-    borderRadius: 20,
     fontSize: 14,
-  },
-  postButton: {
-    color: COLORS.primary,
-    fontWeight: "600",
-    fontSize: 14,
-  },
-  postButtonDisabled: {
-    opacity: 0.5,
-  },
-  centered: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  metaInfo: {
+    },
+    commentSubmit: {
+    marginLeft: 12,
+    },
+    filterContainer: {
+    marginVertical: 8,
     paddingHorizontal: 12,
-    paddingTop: 4,
-    paddingBottom: 6,
     flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 12,
-  },
-  
-  metaText: {
+    gap: 8,
+    },
+    dropdown: {
+    width: "48%",
+    backgroundColor: COLORS.surface,
+    borderRadius: 6,
+    borderWidth: 0.5,
+    borderColor: COLORS.primary,
+    paddingHorizontal: 12,
+    fontSize: 14,
+    height: 40,
+    },
+    dropdownContainer: {
+    borderRadius: 6,
+    borderColor: COLORS.primary,
+    },
+    clearFilterText: {
     color: COLORS.white,
-    fontSize: 13,
-  },
-  
-  metaLabel: {
-    fontWeight: "bold",
+    fontSize: 14,
+    fontWeight: "600",
+    marginLeft: "auto",
+    textDecorationLine: "underline",
+    },
+    noOptionsText: {
     color: COLORS.white,
-  },
-  
-});
+    fontSize: 14,
+    },
+    noPostsContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 16,
+    },
+    
+    noPostsText: {
+      color: COLORS.white,
+      fontSize: 16,
+      fontWeight: "500",
+    },
+    
+    });
+    
+    

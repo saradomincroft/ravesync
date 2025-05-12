@@ -8,19 +8,30 @@ export const createUser = mutation({
     email: v.string(),
     bio: v.optional(v.string()),
     image: v.optional(v.string()),
-    followedGenres: v.array(v.id("genres")),
+    favouriteGenre: v.optional(v.array(v.id("genres"))),
+    favouriteLocation: v.optional(v.array(v.id("locations"))),    
     clerkId: v.string(),
   },
   handler: async (ctx, args) => {
     const username = args.email.split('@')[0];
     const userImage = args.image || "../assets/images/default-user.svg";
-    const existingUser = await ctx.db
+    
+    const existingUserByClerkId= await ctx.db
       .query("users")
       .withIndex("by_clerk_id", (q) => q.eq("clerkId", args.clerkId))
       .first();
 
-    if (existingUser) return;
+    if (existingUserByClerkId) return;
 
+    const existingUserByEmail = await ctx.db
+    .query("users")
+    .filter((q) => q.eq("email", args.email))
+    .first();
+
+    if (existingUserByEmail) {
+      throw new Error("Email is already in use");
+    }
+    
     await ctx.db.insert("users", {
       username,
       email: args.email,
@@ -29,7 +40,8 @@ export const createUser = mutation({
       followers: 0,
       following: 0,
       posts: 0,
-      followedGenres: [],
+      favouriteGenre: [],
+      favouriteLocation: [],
       clerkId: args.clerkId,
     });
   },

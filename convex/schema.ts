@@ -10,12 +10,13 @@ export default defineSchema({
         followers: v.number(),
         following: v.number(),
         posts: v.number(),
-        followedGenres: v.optional(v.array(v.id("genres"))),
-        followedLocations: v.optional(v.array(v.id("locations"))),
+        favouriteGenre: v.optional(v.array(v.id("genres"))),
+        favouriteLocation: v.optional(v.array(v.id("locations"))),
         clerkId: v.string(),
     })
         .index("by_clerk_id", ["clerkId"])
-        .index("by_username", ["username"]),
+        .index("by_username", ["username"])
+        .index("by_email", ["email"]),
 
     posts: defineTable({
         userId: v.id("users"), // Owner of the post
@@ -38,13 +39,13 @@ export default defineSchema({
         name: v.string(),
     }),
 
-    favouriteLocations: defineTable({
-        userId: v.id("users"), // User who favourited the location
-        locationId: v.id("locations"), // The location that has been favourited
-    })
-    .index("by_user", ["userId"])
-    .index("by_location", ["locationId"])
-    .index("by_user_and_location", ["userId", "locationId"]),
+    // favouriteLocations: defineTable({
+    //     userId: v.id("users"), // User who favourited the location
+    //     locationId: v.id("locations"), // The location that has been favourited
+    // })
+    // .index("by_user", ["userId"])
+    // .index("by_location", ["locationId"])
+    // .index("by_user_and_location", ["userId", "locationId"]),
 
     likes: defineTable({
         userId: v.id("users"),
