@@ -170,7 +170,11 @@ const schema = a.schema({
         .authorization((allow) => [
             allow.owner(),
             allow.authenticated().to(['read', 'create']),
-        ]),
+        ])
+        .secondaryIndexes((index) => [
+            index('postId'),
+            index('userId'),
+    ]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
